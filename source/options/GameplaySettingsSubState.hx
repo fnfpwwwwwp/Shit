@@ -140,22 +140,6 @@ class GameplaySettingsSubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		addOption(option);
 
-		var option:Option = new Option('Lane Opacity', 'How Opaque should the lane underlay be.', 'laneOpacity', 'percent', 1);
-		option.scrollSpeed = 1.6;
-		option.minValue = 0.0;
-		option.maxValue = 1;
-		option.changeValue = 0.1;
-		option.decimals = 1;
-		addOption(option);
-
-		var option:Option = new Option('Enemy Lane Opacity', 'How Opaque should the opponent lane be.', 'opponentLaneOpacity', 'percent', 0);
-		option.scrollSpeed = 1.6;
-		option.minValue = 0.0;
-		option.maxValue = 1;
-		option.changeValue = 0.1;
-		option.decimals = 1;
-		addOption(option);
-
 		#if android
 		var option:Option = new Option('GameOver Vibration',
 			'If unchecked, will make the game to vibrate when you die.',
