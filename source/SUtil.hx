@@ -122,7 +122,7 @@ class SUtil
 			case ROOT:
 				daPath = Context.getFilesDir() + '/';
 		}
-		(!FileSystem.exists(SUtil.getPath() + Paths.directory(daPath)))
+		if (!FileSystem.exists(SUtil.getPath() + Paths.directory(daPath)))
 			SUtill.copyContent(Paths.directory(daPath), Paths.directory(daPath)); //this shit was made by and undertale fan and its prob not gonna work
 		//SUtil.mkDirs(Path.directory(daPath));
 
