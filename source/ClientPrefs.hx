@@ -30,9 +30,6 @@ class ClientPrefs {
 	public static var controllerMode:Bool = #if android true #else false #end;
 	public static var hitsoundVolume:Float = 0;
         public static var pauseMusic:String = 'Tea Time';
-	// Lane opacity stuff
-        public static var laneOpacity:Float = 0;
-        public static var opponentLaneOpacity:Float = 0;
 
 	public static var gameplaySettings:Map<String, Dynamic> = [
 		'scrollspeed' => 1.0,
@@ -124,10 +121,6 @@ class ClientPrefs {
 		FlxG.save.data.goodWindow = goodWindow;
 		FlxG.save.data.badWindow = badWindow;
 		FlxG.save.data.safeFrames = safeFrames;
-
-		// Lane opacity
-                FlxG.save.data.laneOpacity = laneOpacity; 
-		FlxG.save.data.opponentLaneOpacity = opponentLaneOpacity;
 
 		FlxG.save.data.gameplaySettings = gameplaySettings;
 		FlxG.save.data.controllerMode = controllerMode;
@@ -242,16 +235,6 @@ class ClientPrefs {
 		if(FlxG.save.data.pauseMusic != null) {
 			pauseMusic = FlxG.save.data.pauseMusic;
 		}
-
-		// Lane opacity
-                if (FlxG.save.data.laneOpacity != null)
-                {
-                        laneOpacity = FlxG.save.data.laneOpacity;
-		}
-                if (FlxG.save.data.opponentLaneOpacity != null)
-                {
-			opponentLaneOpacity = FlxG.save.data.opponentLaneOpacity;
-                }
 
 		if(FlxG.save.data.gameplaySettings != null)
 		{
