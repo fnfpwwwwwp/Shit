@@ -3409,6 +3409,7 @@ class PlayState extends MusicBeatState
 			}
 			transitioning = true;
 		}
+	}
 } 
 #if ACHIEVEMENTS_ALLOWED
 	var achievementObj:AchievementObject = null;
