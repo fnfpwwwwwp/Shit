@@ -4606,6 +4606,7 @@ class PlayState extends MusicBeatState
 					case 'toastie':
 							if(/*ClientPrefs.framerate <= 60 &&*/ ClientPrefs.lowQuality && !ClientPrefs.globalAntialiasing && !ClientPrefs.imagesPersist) {
 								unlock = true;
+							}
 								case 'two_keys':
 									if(!usedPractice) {
 										var howManyPresses:Int = 0;
@@ -4615,7 +4616,6 @@ class PlayState extends MusicBeatState
 			
 										if(howManyPresses <= 2) {
 											unlock = true;
-										}
 									}
 				}
 
