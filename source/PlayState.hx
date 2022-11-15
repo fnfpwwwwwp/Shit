@@ -1760,7 +1760,7 @@ class PlayState extends MusicBeatState
 
 				notes.forEachAlive(function(note:Note) {
 					note.copyAlpha = false;
-					note.alpha = note.multAlpha;
+					note.alpha = 1 * note.multAlpha;
 					if(ClientPrefs.middleScroll && !note.mustPress) {
 						note.alpha *= 0.5;
 					}
