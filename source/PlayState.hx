@@ -237,6 +237,7 @@ class PlayState extends MusicBeatState
 	var timeTxt:FlxText;
 	var scoreTxtTween:FlxTween;
 
+	
 	public static var campaignScore:Int = 0;
 	public static var campaignMisses:Int = 0;
 	public static var seenCutscene:Bool = false;
@@ -301,13 +302,6 @@ class PlayState extends MusicBeatState
 
 		if (FlxG.sound.music != null)
 			FlxG.sound.music.stop();
-
-		// For the "Just the Two of Us" achievement
-		for (i in 0...keysArray.length)
-			{
-				keysPressed.push(false);
-			}
-	
 
 		// Gameplay settings
 		healthGain = ClientPrefs.getGameplaySetting('healthgain', 1);
@@ -1023,7 +1017,7 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.downScroll) healthBarBG.y = 0.11 * FlxG.height;
 
 		healthBar = new FlxBar(healthBarBG.x + 4, healthBarBG.y + 4, RIGHT_TO_LEFT, Std.int(healthBarBG.width - 8), Std.int(healthBarBG.height - 8), this,
-			'health', 0, 2);
+			'shownHealth', 0, 2);
 		healthBar.scrollFactor.set();
 		// healthBar
 		healthBar.visible = !ClientPrefs.hideHud;
@@ -1448,12 +1442,11 @@ class PlayState extends MusicBeatState
 		if(!foundFile) {
 			fileName = Paths.video(name);
 			#if sys
-			if(FileSystem.exists(fileName))
-			    foundFile = true;
+			if(FileSystem.exists(fileName)) {
 			#else
-			if(OpenFlAssets.exists(fileName))
-				foundFile = true;
+			if(OpenFlAssets.exists(fileName)) {
 			#end
+				foundFile = true;
 			}
 		}
 
@@ -3368,7 +3361,6 @@ class PlayState extends MusicBeatState
 
 	
 					var winterHorrorlandNext = (Paths.formatToSongPath(SONG.song) == "eggnog");
-					if (winterHorrorlandNext)
 					{
 						var blackShit:FlxSprite = new FlxSprite(-FlxG.width * FlxG.camera.zoom,
 							-FlxG.height * FlxG.camera.zoom).makeGraphic(FlxG.width * 3, FlxG.height * 3, FlxColor.BLACK);
@@ -3410,24 +3402,7 @@ class PlayState extends MusicBeatState
 			}
 			transitioning = true;
 		}
-	}
 } 
-#if ACHIEVEMENTS_ALLOWED
-	var achievementObj:AchievementObject = null;
-	function startAchievement(achieve:String) {
-		achievementObj = new AchievementObject(achieve, camOther);
-		achievementObj.onFinish = achievementEnd;
-		add(achievementObj);
-		trace('Giving achievement ' + achieve);
-	}
-	function achievementEnd():Void
-	{
-		achievementObj = null;
-		if(endingSong && !inCutscene) {
-			endSong();
-		}
-	}
-	#end
 	public function KillNotes() {
 		while(notes.length > 0) {
 			var daNote:Note = notes.members[0];
@@ -3814,7 +3789,11 @@ class PlayState extends MusicBeatState
 				#if ACHIEVEMENTS_ALLOWED
 				var achieve:String = checkForAchievement(['oversinging']);
 				if (achieve != null) {
-					startAchievement(achieve);
+					Achievements.giveAchievement(achieve, function() {
+						if(endingSong && !inCutscene) {
+							endSong();
+						}
+					}); 
 				}
 				#end
 			}
@@ -4257,7 +4236,11 @@ class PlayState extends MusicBeatState
 				FlxG.save.data.henchmenDeath = Achievements.henchmenDeath;
 				var achieve:String = checkForAchievement(['roadkill_enthusiast']);
 				if (achieve != null) {
-					startAchievement(achieve);
+					Achievements.giveAchievement(achieve, function() {
+						if(endingSong && !inCutscene) {
+							endSong();
+						}
+					});
 				} else {
 					FlxG.save.flush();
 				}
@@ -4549,7 +4532,7 @@ class PlayState extends MusicBeatState
 		setOnLuas('ratingFC', ratingFC);
 	}
 
-  #if ACHIEVEMENTS_ALLOWED
+	#if ACHIEVEMENTS_ALLOWED
 	private function checkForAchievement(achievesToCheck:Array<String> = null):String
 	{
 		if(chartingMode) return null;
@@ -4585,41 +4568,39 @@ class PlayState extends MusicBeatState
 						if(ratingPercent < 0.2 && !practiceMode) {
 							unlock = true;
 						}
+					case 'debugger':
+						if(Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice) {
+							unlock = true;
+						}
+					case 'oversinging':
+						if(boyfriend.holdTimer >= 10 && !usedPractice) {
+						}
 					case 'ur_good':
 						if(ratingPercent >= 1 && !usedPractice) {
 							unlock = true;
 						}
 					case 'roadkill_enthusiast':
 						if(Achievements.henchmenDeath >= 100) {
-							unlock = true;
-						}
-					case 'oversinging':
-						if(boyfriend.holdTimer >= 10 && !usedPractice) {
-							unlock = true;
+								unlock = true;
 						}
 					case 'hype':
 						if(!boyfriendIdled && !usedPractice) {
 							unlock = true;
 						}
-					case 'two_keys':
-						if(!usedPractice) {
-							var howManyPresses:Int = 0;
-							for (j in 0...keysPressed.length) {
-								if(keysPressed[j]) howManyPresses++;
-							}
-
-							if(howManyPresses <= 2) {
-								unlock = true;
-							}
-						}
 					case 'toastie':
-						if(/*ClientPrefs.framerate <= 60 &&*/ ClientPrefs.lowQuality && !ClientPrefs.globalAntialiasing && !ClientPrefs.imagesPersist) {
-							unlock = true;
-						}
-					case 'debugger':
-						if(Paths.formatToSongPath(SONG.song) == 'test' && !usedPractice) {
-							unlock = true;
-						}
+							if(/*ClientPrefs.framerate <= 60 &&*/ ClientPrefs.lowQuality && !ClientPrefs.globalAntialiasing && !ClientPrefs.imagesPersist) {
+								unlock = true;
+								case 'two_keys':
+									if(!usedPractice) {
+										var howManyPresses:Int = 0;
+										for (j in 0...keysPressed.length) {
+											if(keysPressed[j]) howManyPresses++;
+										}
+			
+										if(howManyPresses <= 2) {
+											unlock = true;
+										}
+									}
 				}
 
 				if(unlock) {
