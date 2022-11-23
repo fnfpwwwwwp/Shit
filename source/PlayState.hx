@@ -3403,6 +3403,7 @@ class PlayState extends MusicBeatState
 			transitioning = true;
 		}
 } 
+		
 	public function KillNotes() {
 		while(notes.length > 0) {
 			var daNote:Note = notes.members[0];
