@@ -61,7 +61,6 @@ jobs:
           haxelib git extension-videoview https://github.com/MAJigsaw77/extension-videoview.git
           haxelib set openfl 9.1.0
           haxelib set lime 7.9.0
-
       - name: Setup Lime
         run: |
           echo "${{github.run_id}}" > VERSION
@@ -78,7 +77,6 @@ jobs:
          haxelib run lime build android -D no-compilation -D luajit_static -D macro-times -D analyzer-optimize -armv7 --app-version="4.0.0-${{ github.run_id}}"
          cd export/release/android/bin/app/build/outputs/apk/debug
          mv PsychEngine-debug.apk PsychEngine-armv7.apk
-
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
@@ -137,7 +135,6 @@ jobs:
           haxelib git extension-videoview https://github.com/MAJigsaw77/extension-videoview.git
           haxelib set openfl 9.1.0
           haxelib set lime 7.9.0
-
       - name: Setup Lime
         run: |
           echo "${{github.run_id}}" > VERSION
@@ -151,12 +148,10 @@ jobs:
 
       - name: Compile
         run: |
-         haxelib run lime build android -D no-compilation -D luajit_static -D macro-times -D analyzer-optimize -arm64 --app-version="4.0.0-${{ github.run_id}}"
-         cd export/release/android/bin/app/build/outputs/apk/debug
-         mv PsychEngine-debug.apk PsychEngine-arm64.apk
-
+        haxelib run lime build android --app-version="4.0.0-${{ github.run_id}}"
       - name: Publish Artifact
         uses: actions/upload-artifact@main
         with:
           name: buildarm64
           path: export/release/android/bin/app/build/outputs/apk/debug 
+Footer
