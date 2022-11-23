@@ -154,4 +154,3 @@ jobs:
         with:
           name: buildarm64
           path: export/release/android/bin/app/build/outputs/apk/debug 
-Footer
