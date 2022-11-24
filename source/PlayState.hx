@@ -1457,18 +1457,6 @@ class PlayState extends MusicBeatState
 			bg.cameras = [camHUD];
 			add(bg);
 
-			(new FlxVideo(fileName)).finishCallback = function() {
-				remove(bg);
-				startAndEnd();
-			}
-			return;
-		}
-		else
-		{
-			FlxG.log.warn('Couldnt find video file: ' + fileName);
-			startAndEnd();
-		}
-		#end
 		startAndEnd();
 	}
 
@@ -3403,7 +3391,6 @@ class PlayState extends MusicBeatState
 			transitioning = true;
 		}
 } 
-		
 	public function KillNotes() {
 		while(notes.length > 0) {
 			var daNote:Note = notes.members[0];
