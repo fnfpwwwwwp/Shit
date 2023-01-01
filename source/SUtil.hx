@@ -1,6 +1,7 @@
 package;
 
 #if android
+import android.Tools
 import android.Permissions;
 import android.content.Context;
 import android.os.Build;
@@ -20,18 +21,27 @@ import sys.FileSystem;
 import sys.io.File;
 #end
 
-enum StorageType
-{
-	ANDROID_DATA;
-	ROOT;
-}
-
 /**
  * ...
  * @author Mihai Alexandru (M.A. Jigsaw)
  */
 class SUtil
 {
+	#if android
+	private static var aDir:String = null; // android dir
+	#end
+	public static function getPath():String
+	{
+		#if android
+		if (aDir != null && aDir.length > 0)
+			return aDir;
+		else
+			return aDir = Tools.getExternalStorageDirectory() + '/' + '.' + Application.current.meta.get('file') + '/';
+		#else
+		return '';
+		#end
+
+	}
 	/**
 	 * A simple function that checks for storage permissions and game files/folders.
 	 */
@@ -110,7 +120,7 @@ class SUtil
 	/**
 	 * This returns the external storage path that the game will use by the type.
 	 */
-	public static function getPath(type:StorageType = ANDROID_DATA):String
+	/*public static function getPath(type:StorageType = ANDROID_DATA):String
 	{
 		#if android
 		var daPath:String = '';
@@ -130,7 +140,7 @@ class SUtil
 		#else
 		return '';
 		#end
-	}
+	}*/
 
 	/**
 	 * Uncaught error handler, original made by: sqirra-rng
